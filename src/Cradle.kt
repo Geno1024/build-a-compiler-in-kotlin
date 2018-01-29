@@ -236,13 +236,25 @@ object Cradle
     }
 
     /**********************************************************/
+    // Parse and Translate an Assignment Statement
+
+    fun Assignment()
+    {
+        var Name: Char = GetName()
+        Match('=')
+        Expression()
+        EmitLn("LEA $Name(PC),A0")
+        EmitLn("MOVE D0,(A0)")
+    }
+
+    /**********************************************************/
     // Main Program
 
     @JvmStatic
     fun main(args: Array<String>)
     {
         Init()
-        Expression()
+        Assignment()
         if (Look != CR) Expected("Newline")
     }
 }
