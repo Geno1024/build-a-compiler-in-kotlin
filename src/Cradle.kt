@@ -116,11 +116,20 @@ object Cradle
     }
 
     /**********************************************************/
+    // Parse and Translate a Math Expression
+
+    fun Expression()
+    {
+        EmitLn("MOVE #${GetNum()},D0")
+    }
+
+    /**********************************************************/
     // Main Program
 
     @JvmStatic
     fun main(args: Array<String>)
     {
         Init()
+        Expression()
     }
 }
