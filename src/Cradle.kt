@@ -134,6 +134,8 @@ object Cradle
             Expression()
             Match(')')
         }
+        else if (IsAlpha(Look))
+            EmitLn("MOVE ${GetName()}(PC),D0")
         else
             EmitLn("MOVE #${GetNum()},D0")
     }
