@@ -149,7 +149,17 @@ object Cradle
 
     fun Term()
     {
-        EmitLn("MOVE #${GetNum()},D0")
+        Factor()
+        while (Look in arrayOf('*', '/'))
+        {
+            EmitLn("MOVE D0,-(SP)")
+            when (Look)
+            {
+                '*' -> Multiply()
+                '/' -> Divide()
+                else -> Expected("Mulop")
+            }
+        }
     }
 
     /**********************************************************/
@@ -159,7 +169,7 @@ object Cradle
     {
         Match('+')
         Term()
-        EmitLn("ADD D1,D0")
+        EmitLn("ADD (SP)+,D0")
     }
 
     /**********************************************************/
@@ -169,7 +179,7 @@ object Cradle
     {
         Match('-')
         Term()
-        EmitLn("SUB D1,D0")
+        EmitLn("SUB (SP)+,D0")
         EmitLn("NEG D0")
     }
 
@@ -181,7 +191,7 @@ object Cradle
         Term()
         while (Look in arrayOf('+', '-'))
         {
-            EmitLn("MOVE D0,D1")
+            EmitLn("MOVE D0,-(SP)")
             when (Look)
             {
                 '+' -> Add()
