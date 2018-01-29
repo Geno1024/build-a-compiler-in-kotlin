@@ -120,7 +120,14 @@ object Cradle
 
     fun Factor()
     {
-        EmitLn("MOVE #${GetNum()},D0")
+        if (Look == '(')
+        {
+            Match('(')
+            Expression()
+            Match(')')
+        }
+        else
+            EmitLn("MOVE #${GetNum()},D0")
     }
 
     /**********************************************************/
