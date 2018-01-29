@@ -124,6 +124,21 @@ object Cradle
     }
 
     /**********************************************************/
+    // Parse and Translate an Identifier
+    fun Ident()
+    {
+        var Name: Char = GetName()
+        if (Look == '(')
+        {
+            Match('(')
+            Match(')')
+            EmitLn("BSR $Name")
+        }
+        else
+            EmitLn("MOVE $Name(PC),D0")
+    }
+
+    /**********************************************************/
     // Parse and Translate a Math Factor
 
     fun Factor()
@@ -135,7 +150,7 @@ object Cradle
             Match(')')
         }
         else if (IsAlpha(Look))
-            EmitLn("MOVE ${GetName()}(PC),D0")
+            Ident()
         else
             EmitLn("MOVE #${GetNum()},D0")
     }
