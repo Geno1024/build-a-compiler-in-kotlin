@@ -116,6 +116,35 @@ object Cradle
     }
 
     /**********************************************************/
+    // Parse and Translate a Math Factor
+
+    fun Factor()
+    {
+        EmitLn("MOVE #${GetNum()},D0")
+    }
+
+    /**********************************************************/
+    // Recognize and Translate a Multiply
+
+    fun Multiply()
+    {
+        Match('*')
+        Factor()
+        EmitLn("MULS (SP)+,D0")
+    }
+
+    /**********************************************************/
+    // Recognize and Translate a Divide
+
+    fun Divide()
+    {
+        Match('/')
+        Factor()
+        EmitLn("MOVE (SP)+,D1")
+        EmitLn("DIVS D1,D0")
+    }
+
+    /**********************************************************/
     // Parse and Translate a Math Expression
 
     fun Term()
@@ -150,12 +179,15 @@ object Cradle
     fun Expression()
     {
         Term()
-        EmitLn("MOVE D0,D1")
-        when (Look)
+        while (Look in arrayOf('+', '-'))
         {
-            '+' -> Add()
-            '-' -> Subtract()
-            else -> Expected("Addop")
+            EmitLn("MOVE D0,D1")
+            when (Look)
+            {
+                '+' -> Add()
+                '-' -> Subtract()
+                else -> Expected("Addop")
+            }
         }
     }
 
