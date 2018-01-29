@@ -24,7 +24,7 @@ object Cradle
     fun Error(s: String)
     {
         println()
-        System.err.println("Error: $s")
+        System.err.println("Error: $s.")
     }
 
     /**********************************************************/
@@ -41,7 +41,7 @@ object Cradle
 
     fun Expected(s: String)
     {
-        Abort("$s Expected.")
+        Abort("$s Expected")
     }
 
     /**********************************************************/
@@ -157,15 +157,6 @@ object Cradle
     }
 
     /**********************************************************/
-    // Initialize
-
-    fun Init()
-    {
-        GetChar()
-        SkipWhite()
-    }
-
-    /**********************************************************/
     // Parse and Translate an Identifier
     fun Ident()
     {
@@ -215,6 +206,7 @@ object Cradle
         Match('/')
         Factor()
         EmitLn("MOVE (SP)+,D1")
+        EmitLn("EXS.L D0")
         EmitLn("DIVS D1,D0")
     }
 
@@ -231,7 +223,6 @@ object Cradle
             {
                 '*' -> Multiply()
                 '/' -> Divide()
-                else -> Expected("Mulop")
             }
         }
     }
@@ -271,7 +262,6 @@ object Cradle
             {
                 '+' -> Add()
                 '-' -> Subtract()
-                else -> Expected("Addop")
             }
         }
     }
@@ -286,6 +276,15 @@ object Cradle
         Expression()
         EmitLn("LEA $Name(PC),A0")
         EmitLn("MOVE D0,(A0)")
+    }
+
+    /**********************************************************/
+    // Initialize
+
+    fun Init()
+    {
+        GetChar()
+        SkipWhite()
     }
 
     /**********************************************************/
