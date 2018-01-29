@@ -45,15 +45,6 @@ object Cradle
     }
 
     /**********************************************************/
-    // Match a Specific Input Character
-
-    fun Match(x: Char)
-    {
-        if (Look == x) GetChar()
-        else Expected("'$x'")
-    }
-
-    /**********************************************************/
     // Recognize an Alpha Character
 
     fun IsAlpha(c: Char): Boolean
@@ -86,6 +77,35 @@ object Cradle
     }
 
     /**********************************************************/
+    // Recognize White Space
+
+    fun IsWhite(c: Char): Boolean
+    {
+        return c in arrayOf(' ', TAB)
+    }
+
+    /**********************************************************/
+    // Skip Over Leading White Space
+
+    fun SkipWhite()
+    {
+        while (IsWhite(Look)) GetChar()
+    }
+
+    /**********************************************************/
+    // Match a Specific Input Character
+
+    fun Match(x: Char)
+    {
+        if (Look != x) Expected("'$x'")
+        else
+        {
+            GetChar()
+            SkipWhite()
+        }
+    }
+
+    /**********************************************************/
     // Get an Identifier
 
     fun GetName(): String
@@ -97,7 +117,9 @@ object Cradle
             Token = Token + Look.toUpperCase()
             GetChar()
         }
-        return Token
+        val GetName = Token
+        SkipWhite()
+        return GetName
     }
 
     /**********************************************************/
@@ -112,7 +134,9 @@ object Cradle
             Value = Value + Look
             GetChar()
         }
-        return Value
+        val GetNum = Value
+        SkipWhite()
+        return GetNum
     }
 
     /**********************************************************/
@@ -138,6 +162,7 @@ object Cradle
     fun Init()
     {
         GetChar()
+        SkipWhite()
     }
 
     /**********************************************************/
