@@ -70,6 +70,14 @@ object Cradle
     }
 
     /**********************************************************/
+    // Recognize an Alphanumeric
+
+    fun IsAlNum(c: Char): Boolean
+    {
+        return IsAlpha(c) or IsDigit(c)
+    }
+
+    /**********************************************************/
     // Recognize an Addop
 
     fun IsAddop(c: Char): Boolean
@@ -80,23 +88,31 @@ object Cradle
     /**********************************************************/
     // Get an Identifier
 
-    fun GetName(): Char
+    fun GetName(): String
     {
+        var Token: String = ""
         if (!IsAlpha(Look)) Expected("Name")
-        val GetName = Look.toUpperCase()
-        GetChar()
-        return GetName
+        while (IsAlNum(Look))
+        {
+            Token = Token + Look.toUpperCase()
+            GetChar()
+        }
+        return Token
     }
 
     /**********************************************************/
     // Get a Number
 
-    fun GetNum(): Char
+    fun GetNum(): String
     {
+        var Value: String = ""
         if (!IsDigit(Look)) Expected("Integer")
-        val GetNum = Look
-        GetChar()
-        return GetNum
+        while (IsDigit(Look))
+        {
+            Value = Value + Look
+            GetChar()
+        }
+        return Value
     }
 
     /**********************************************************/
@@ -128,7 +144,7 @@ object Cradle
     // Parse and Translate an Identifier
     fun Ident()
     {
-        var Name: Char = GetName()
+        var Name: String = GetName()
         if (Look == '(')
         {
             Match('(')
@@ -240,7 +256,7 @@ object Cradle
 
     fun Assignment()
     {
-        var Name: Char = GetName()
+        var Name: String = GetName()
         Match('=')
         Expression()
         EmitLn("LEA $Name(PC),A0")
