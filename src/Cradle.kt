@@ -118,9 +118,45 @@ object Cradle
     /**********************************************************/
     // Parse and Translate a Math Expression
 
-    fun Expression()
+    fun Term()
     {
         EmitLn("MOVE #${GetNum()},D0")
+    }
+
+    /**********************************************************/
+    // Recognize and Translate an Add
+
+    fun Add()
+    {
+        Match('+')
+        Term()
+        EmitLn("ADD D1,D0")
+    }
+
+    /**********************************************************/
+    // Recognize and Translate a Subtract
+
+    fun Subtract()
+    {
+        Match('-')
+        Term()
+        EmitLn("SUB D1,D0")
+        EmitLn("NEG D0")
+    }
+
+    /**********************************************************/
+    // Parse and Translate an Expression
+
+    fun Expression()
+    {
+        Term()
+        EmitLn("MOVE D0,D1")
+        when (Look)
+        {
+            '+' -> Add()
+            '-' -> Subtract()
+            else -> Expected("Addop")
+        }
     }
 
     /**********************************************************/
