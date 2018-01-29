@@ -4,6 +4,7 @@ object Cradle
     /**********************************************************/
     // Constant Declarations
     val TAB = "\t"
+    val CR = '\r'
 
     /**********************************************************/
     // Variable Declarations
@@ -23,7 +24,7 @@ object Cradle
     fun Error(s: String)
     {
         println()
-        System.err.println("Error: $s.")
+        System.err.println("Error: $s")
     }
 
     /**********************************************************/
@@ -242,5 +243,6 @@ object Cradle
     {
         Init()
         Expression()
+        if (Look != CR) Expected("Newline")
     }
 }
