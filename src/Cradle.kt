@@ -69,6 +69,14 @@ object Cradle
     }
 
     /**********************************************************/
+    // Recognize an Addop
+
+    fun IsAddop(c: Char): Boolean
+    {
+        return c in arrayOf('+', '-')
+    }
+
+    /**********************************************************/
     // Get an Identifier
 
     fun GetName(): Char
@@ -195,8 +203,9 @@ object Cradle
 
     fun Expression()
     {
-        Term()
-        while (Look in arrayOf('+', '-'))
+        if (IsAddop(Look)) EmitLn("CLR D0")
+        else Term()
+        while (IsAddop(Look))
         {
             EmitLn("MOVE D0,-(SP)")
             when (Look)
